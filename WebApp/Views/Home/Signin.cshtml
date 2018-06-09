@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Se connecter";
+}
+
+<header></header>
+
+
+<main>
+    <div class="container">
+        <div class="section">
+            <div class="row">
+                <div class="col s4"></div>
+                <form class="col s4 card-panel" method="post" style="padding:30px; margin-top:60px;">
+                    <div class='row'>
+                        <div class='input-field col s12'>
+                            <input type='text' name='email' id='email' />
+                            <label for='pseudo'>Entrer un email</label>
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='input-field col s12'>
+                            <input type='password' name='password' id='password' />
+                            <label for='password'>Entrer un mot de passe</label>
+                        </div>
+                    </div>
+                    <center>
+                        <div class='row'>
+                            <div class="col s2"></div>
+                            <button type='button' name='btn_login' class='col s8 btn btn-large waves-effect light-blue lighten-1' onclick="signIn();">Se connecter</button>
+                            <div class="col s2"></div>
+                        </div>
+                    </center>
+
+                </form>
+                <div class="col s4"></div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <p class="center-align">
+                        <a class="waves-effect waves-light btn-small orange darken-4" href="@Url.Action("Signup", "Home")"><i class="material-icons left">create</i>M'inscrire</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+
+    function signIn()
+    {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+
+        // Sign in with email and pass.
+
+        firebase.auth().signInWithEmailAndPassword(email, password).then(
+            function (user)
+            {
+                window.location.replace("/Home/Play");
+
+            },
+            function (error)
+            {
+                M.toast({ html: error.message });
+            }
+        );
+    }
+</script>

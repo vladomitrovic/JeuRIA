@@ -1,0 +1,119 @@
+﻿
+@{
+    ViewBag.Title = "Game";
+}
+
+<style>
+	.shaky {
+  animation: shake 0.5s;
+  animation-iteration-count: infinite;
+}
+
+@@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+    #score
+    {
+        display: none;
+    }
+
+    #divTimer
+    {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+</style>
+
+<script>
+        firebase.auth().onAuthStateChanged(function (user)
+        {
+            if (!user)
+            {
+                window.location.replace("/Home/Signin");
+            }
+        });
+</script>
+
+<!-- Modal Structure -->
+<div id="modal2" class="modal">
+    <div class="modal-content">
+        <h2 class="center-align">Score : </h2>
+        <h2 class="light-blue-text lighten-1 center-align"><span id="scoreView"></span></h2>
+        <h5 class="center-align">Mon précédent record : <span id="precedentScore"></span></h5>
+        <p class="center-align">
+            <a class="waves-effect waves-light btn-small orange darken-4 pulse" href="@Url.Action("Game", "Home")">Rejouer<i class="material-icons right">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-small red light-blue lighten-1" href="@Url.Action("Leaderboard", "Home")">Leaderboard<i class="material-icons right">grid_on</i></a>
+        </p>
+    </div>
+</div>
+
+<main>
+    <div class="container">
+        <div class="section">
+
+            <div class="row valign-wrapper center-align">
+                <div id="divTimer" class="card-panel">
+                    <div class="col s3">
+                        <div class="card-panel light-blue lighten-1 center-align">
+                            <span id="lettre" class="white-text firstLetter" />
+                        </div>
+                    </div>
+                    <div class="col s5">
+                        <p id="categorie" class="category light-blue-text lighten-1" />
+                    </div>
+                    <div class="col s4 ">
+                        <canvas id="chrono" width="200px" height="200px" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <form class="col s12" onsubmit="return false">
+                    <div class="col s4"></div>
+                    <div class="input-field col s3">
+                        <input id="answer" type="text" class="white-text" autocomplete="off"/>
+                        <label for="answer" class="labelAnswer white-text">Votre réponse</label>
+                    </div>
+                    <div class="input-field col s2">
+                        <button id="btn" class="btn-large waves-effect waves-light light-blue lighten-1 white-text center-align " type="button" name="action" >
+                            <i class="large material-icons">send</i>
+                        </button>
+                    </div>
+                    <div class="col s3"></div>
+                </form>
+            </div>
+
+            <div class="row">
+                <div class="col s2"></div>
+                <div class="col s8">
+                    <p class="center-align">
+                        <a id="time" class="waves-effect waves-light btn-large orange darken-4 amber-text bonus"><i class="large material-icons">alarm_on</i></a>
+                        <a id="next" class="waves-effect waves-light btn-large orange darken-4 amber-text bonus"><i class="large material-icons">redo</i></a>
+                        <a id="cheat" class="waves-effect waves-light btn-large orange darken-4 amber-text bonus"><i class="large material-icons">star</i></a>
+                    </p>
+                </div>
+                <div class="col s2"></div>
+            </div>
+        </div>
+        <br><br>
+    </div>
+
+    <span id="score"></span>
+</main>
+
+<script src="https://desk-customers.s3.amazonaws.com/shared/sessvars.js" type="text/javascript"></script>
+<script src="~/Scripts/js_chrono.js"></script>
+<script src="~/Scripts/game.js"></script>
+<embed src="~/audio/music.mp3" autostart="true" width="0" height="0" id="audio" enablejavascript="true">

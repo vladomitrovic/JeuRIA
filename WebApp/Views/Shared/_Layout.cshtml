@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+    <title>@ViewBag.Title - 12 secondes</title>
+
+    <!-- Firebase  -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "***",
+            authDomain: "projetria-3f774.firebaseapp.com",
+            databaseURL: "https://projetria-3f774.firebaseio.com",
+            projectId: "projetria-3f774",
+            storageBucket: "",
+            messagingSenderId: "***"
+        };
+        firebase.initializeApp(config);
+        var database = firebase.database();
+    </script>
+    <script>
+        var email;
+        var uid;
+
+        firebase.auth().onAuthStateChanged(function (user)
+        {
+            if (user)
+            {
+                email = user.email;
+                uid = user.uid;
+                document.getElementById("navMenuDefault").style.display = "none";
+                document.getElementById("navMenuDefaultMobile").style.display = "none";
+                $("#userName").html(email);
+                $("#userNameMobile").html(email);
+                
+            }
+            else
+            {
+                document.getElementById("navMenuLoggedIn").style.display = "none";
+                document.getElementById("navMenuLoggedInMobile").style.display = "none";
+            }
+        });
+    </script>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>Voulez-vous vous déconnecter ?</h4>
+            <p class="center-align"><a class="waves-effect waves-light btn-small red" onclick="signOut();">Se déconnecter<i class="material-icons right">power_settings_new</i></a></p>
+        </div>
+    </div>
+    
+ 
+    <nav class="light-blue lighten-1" role="navigation">
+        <div class="nav-wrapper container">
+            <ul class="right hide-on-med-and-down">
+                <li><a href="@Url.Action("Index", "Home")"><i class="material-icons left">account_balance</i>Accueil</a></li>
+                <li><a href="@Url.Action("Play", "Home")"><i class="material-icons left">games</i>Jouer</a></li>
+                <li><a href="@Url.Action("Leaderboard", "Home")"><i class="material-icons left">grid_on</i>Leaderboard</a></li>
+                <li><a class="btnOpenTap" href="@Url.Action("Rules", "Home")"><i class="material-icons left">translate</i>Règles</a></li>
+                <li id="navMenuDefault"><a href="@Url.Action("Signin", "Home")"><i class="material-icons left">face</i>Se connecter</a></li>
+                <li id="navMenuLoggedIn"><a href="#modal1" class="modal-trigger"><i class="material-icons left">face</i><span id="userName"></span></a></li>
+            </ul>
+            <ul id="nav-mobile" class="sidenav">
+                <li><a href="@Url.Action("Index", "Home")"><i class="material-icons left">account_balance</i>Accueil</a></li>
+                <li><a href="@Url.Action("Play", "Home")"><i class="material-icons left">games</i>Jouer</a></li>
+                <li><a href="@Url.Action("Leaderboard", "Home")"><i class="material-icons left">grid_on</i>Leaderboard</a></li>
+                <li><a class="btnOpenTap" href="@Url.Action("Rules", "Home")"><i class="material-icons left">translate</i>Règles</a></li>
+                <li id="navMenuDefaultMobile"><a href="@Url.Action("Signin", "Home")"><i class="material-icons left">face</i>Se connecter</a></li>
+                <li id="navMenuLoggedInMobile"><a href="#modal1" class="modal-trigger"><i class="material-icons left">face</i><span id="userNameMobile"></span></a></li>
+            </ul>
+            <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+
+
+    @RenderBody()
+
+
+
+    <!-- Tap Target Structure 
+    <div class="tap-target light-blue lighten-1 white-text" data-target="menu">
+        <div class="tap-target-content">
+            <h5 class="right-align">Comment jouer ?</h5>
+            <p class="right-align">Vous avez 12 secondes pour trouver un mot appartenant à une catégorie donnée et commençant par une lettre donnée. Tant que vous réusissez, vous repartez pour un tour. Enchaînez le plus de mot juste à la suite !</p>
+        </div>
+    </div>
+
+    <div class="fixed-action-btn">
+        <a id="menu" class="waves-effect waves-light btn btn-floating light-blue lighten-1"><i class="material-icons">menu</i></a>
+    </div>-->
+
+    <footer class="page-footer light-blue lighten-1">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <p class="grey-text text-lighten-4"></p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container center">
+                copyright hes-so
+            </div>
+        </div>
+    </footer>
+
+    <!--  Scripts-->
+    @Scripts.Render("~/bundles/materialize")
+    @RenderSection("scripts", required: false)
+
+
+    <script>
+        //M.AutoInit();
+
+        //$(".btnOpenTap").click(function () {
+          //  $('.tap-target').tapTarget('open');
+        //});
+        
+        $(document).ready(function () {
+            
+            $('.modal').modal();
+            $('.sidenav').sidenav();
+        });
+    </script>
+
+    <script>
+
+        function signOut() {
+            firebase.auth().signOut().then(function () {
+                window.location.replace("/Home/Signin");
+            }, function (error) {
+                console.error('Sign Out Error', error);
+            });
+        }
+
+    </script>
+
+</body>
+</html>

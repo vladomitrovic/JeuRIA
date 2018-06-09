@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "Leaderboard";
+}
+
+
+
+<script>
+    var arr = new Array();
+    var counter = 0;
+
+    firebase.database().ref('users').orderByChild('highestScore').once('value').then(function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+            var email = childSnapshot.val().email;
+            var highestScore = childSnapshot.val().highestScore;
+
+            var lineArr = [email, highestScore];
+            arr[counter] = lineArr;
+            counter += 1;
+
+        });
+
+           
+        }).then(function () {
+            arr.reverse();
+            for (var i = 0; i < arr.length; i++) {
+                $("#tableScores").append("<tr>");
+                for (var j = -1; j < arr[0].length; j++) {
+                    if (j == -1) {
+                        $("#tableScores").append("<th class='center-align'>" + (i + 1) + "</th>");
+                    }
+                    else {
+                        $("#tableScores").append("<th class='center-align'>" + arr[i][j] + "</th>");
+                    }
+                }
+                $("#tableScores").append("</tr>");
+            }
+
+        });
+</script>
+
+<main>
+    <div class="container">
+        <div class="section">
+            <div class="row">
+                <h2 class="light-blue-text lighten-1">Leaderboard</h2>
+            </div>
+
+            <div class="row">
+                <div class="col s2"></div>
+                <div class="col s8">
+
+                    <div class="card-panel">
+                        <table class="striped highlight">
+                            <thead class="light-blue-text lighten-1">
+                                <tr>
+                                    <th class="center-align">Rang</th>
+                                    <th class="center-align">Pseudo</th>
+                                    <th class="center-align">Score</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableScores">
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="col s2"></div>
+            </div>
+        </div>
+        <br><br>
+    </div>
+</main>
+
